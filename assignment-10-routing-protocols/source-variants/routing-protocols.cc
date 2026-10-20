@@ -8,11 +8,11 @@
  *
  * HOW TO SET UP & COMPILE IN NS-3:
  *   1. Copy this file into your NS-3 scratch directory:
- *      cp ass10/ns3/routing_protocols.cc ~/ns-allinone-3.xx/ns-3.xx/scratch/
+ *      cp assignment-10-routing-protocols/source-variants/routing-protocols.cc ~/ns-allinone-3.xx/ns-3.xx/scratch/
  *   2. Navigate to your NS-3 root directory:
  *      cd ~/ns-allinone-3.xx/ns-3.xx
  *   3. Build & Run:
- *      ./ns3 run scratch/routing_protocols
+ *      ./ns3 run scratch/routing-protocols
  *
  * HOW TO STOP:
  *   - Automatic Stop: Simulator stops automatically at t = 15.0 seconds (Simulator::Stop(Seconds(15.0))).

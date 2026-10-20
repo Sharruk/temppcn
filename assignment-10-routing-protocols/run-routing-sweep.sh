@@ -7,7 +7,7 @@ cd /root/ns-3-dev
 for proto in RIP OSPF AODV; do
   for cond in normal congestion failure; do
     logf="/tmp/run_${proto}_${cond}.log"
-    ./ns3 run "scratch/ass10 --protocol=${proto} --condition=${cond}" > "$logf" 2>&1
+    ./ns3 run "scratch/routing-protocols-experiment --protocol=${proto} --condition=${cond}" > "$logf" 2>&1
     echo "===== ${proto} / ${cond} =====" >> output.txt
     grep "^Flow " "$logf" >> output.txt
     echo "" >> output.txt

@@ -7,13 +7,13 @@
  *
  * HOW TO SET UP & COMPILE IN NS-3:
  *   1. Copy this file into your NS-3 scratch directory:
- *      cp ass9/ns3/tcp_congestion.cc ~/ns-allinone-3.xx/ns-3.xx/scratch/
+ *      cp assignment-09-tcp-congestion-control/source-variants/tcp-congestion-control.cc ~/ns-allinone-3.xx/ns-3.xx/scratch/
  *   2. Navigate to your NS-3 root directory:
  *      cd ~/ns-allinone-3.xx/ns-3.xx
  *   3. Build & Run with different TCP variants:
- *      ./ns3 run "scratch/tcp_congestion --tcpVariant=TcpCubic"
- *      ./ns3 run "scratch/tcp_congestion --tcpVariant=TcpNewReno"
- *      ./ns3 run "scratch/tcp_congestion --tcpVariant=TcpBbr"
+ *      ./ns3 run "scratch/tcp-congestion-control --tcpVariant=TcpCubic"
+ *      ./ns3 run "scratch/tcp-congestion-control --tcpVariant=TcpNewReno"
+ *      ./ns3 run "scratch/tcp-congestion-control --tcpVariant=TcpBbr"
  *
  * HOW TO STOP:
  *   - Automatic Stop: Simulator stops automatically at t = 10.0 seconds (Simulator::Stop(Seconds(10.0))).
