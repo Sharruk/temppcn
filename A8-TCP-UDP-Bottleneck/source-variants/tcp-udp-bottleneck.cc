@@ -8,7 +8,7 @@
  *
  * HOW TO SET UP & COMPILE IN NS-3:
  *   1. Copy this file into your NS-3 scratch directory:
- *      cp assignment-08-tcp-udp-bottleneck/source-variants/tcp-udp-bottleneck.cc ~/ns-allinone-3.xx/ns-3.xx/scratch/
+ *      cp A8-TCP-UDP-Bottleneck/source-variants/tcp-udp-bottleneck.cc ~/ns-allinone-3.xx/ns-3.xx/scratch/
  *   2. Navigate to your NS-3 root directory:
  *      cd ~/ns-allinone-3.xx/ns-3.xx
  *   3. Build & Run:

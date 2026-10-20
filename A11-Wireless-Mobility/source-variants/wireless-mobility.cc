@@ -8,7 +8,7 @@
  *
  * HOW TO SET UP & COMPILE IN NS-3:
  *   1. Copy this file into your NS-3 scratch directory:
- *      cp assignment-11-wireless-mobility/source-variants/wireless-mobility.cc ~/ns-allinone-3.xx/ns-3.xx/scratch/
+ *      cp A11-Wireless-Mobility/source-variants/wireless-mobility.cc ~/ns-allinone-3.xx/ns-3.xx/scratch/
  *   2. Navigate to your NS-3 root directory:
  *      cd ~/ns-allinone-3.xx/ns-3.xx
  *   3. Build & Run:
