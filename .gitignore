@@ -1,0 +1,38 @@
+# Excluded assignment directories
+ass1/
+ass2/
+ass3/
+ass4/
+ass5/
+ass6/
+
+# Excluded validation and temporary directories
+VALIDATION_LOGS/
+.scripts/
+temppcn/
+
+# Build artifacts and compiled binaries
+*.o
+*.obj
+*.exe
+*.out
+*.log
+*.pcap
+*.pcapng
+*.tr
+*.xml
+*.png
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+
+# Environment and secrets
+.env
+*.pem
+*.key
