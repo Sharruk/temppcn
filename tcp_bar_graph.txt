@@ -1,0 +1,75 @@
+# ============================================================
+# SIMPLE BAR GRAPH CODE FOR JUPYTER NOTEBOOK (NS-3 TCP VARIANTS)
+# Copy and paste any of these blocks into a Jupyter Notebook cell
+# ============================================================
+
+# ------------------------------------------------------------
+# 1. SIMPLEST BAR GRAPH (THROUGHPUT COMPARISON)
+# ------------------------------------------------------------
+import matplotlib.pyplot as plt
+
+# 1. Define TCP variants and their throughput (in Mbps) from NS-3 output
+variants = ['Reno', 'Cubic', 'BBR']
+throughput = [9.86, 9.90, 9.85]   # Replace with your simulation values
+
+# 2. Plot Bar Graph
+plt.figure(figsize=(6, 4))
+plt.bar(variants, throughput, color=['skyblue', 'coral', 'lightgreen'], edgecolor='black')
+
+# 3. Add Labels and Title
+plt.xlabel('TCP Variants')
+plt.ylabel('Throughput (Mbps)')
+plt.title('TCP Variants vs Throughput (NS-3)')
+plt.grid(axis='y', linestyle='--', alpha=0.7)
+
+# 4. Display in Jupyter Notebook
+plt.show()
+
+
+# ------------------------------------------------------------
+# 2. SIMPLE BAR GRAPH (END-TO-END DELAY COMPARISON)
+# ------------------------------------------------------------
+import matplotlib.pyplot as plt
+
+variants = ['Reno', 'Cubic', 'BBR']
+delay = [48.91, 48.82, 49.15]     # Average Delay in milliseconds (ms)
+
+plt.figure(figsize=(6, 4))
+plt.bar(variants, delay, color=['dodgerblue', 'orange', 'forestgreen'], edgecolor='black')
+
+plt.xlabel('TCP Variants')
+plt.ylabel('Average Delay (ms)')
+plt.title('TCP Variants vs Average Delay (NS-3)')
+plt.grid(axis='y', linestyle='--', alpha=0.7)
+
+plt.show()
+
+
+# ------------------------------------------------------------
+# 3. SIDE-BY-SIDE COMPARISON (THROUGHPUT & DELAY TOGETHER)
+# ------------------------------------------------------------
+import matplotlib.pyplot as plt
+
+variants = ['Reno', 'Cubic', 'BBR']
+throughput = [9.86, 9.90, 9.85]  # Mbps
+delay = [48.91, 48.82, 49.15]    # ms
+
+# Create 1 row, 2 columns of subplots
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 4))
+
+# Left Graph: Throughput
+ax1.bar(variants, throughput, color=['royalblue', 'darkorange', 'seagreen'])
+ax1.set_title('Throughput (Mbps)')
+ax1.set_xlabel('TCP Variant')
+ax1.set_ylabel('Mbps')
+ax1.grid(axis='y', linestyle='--', alpha=0.5)
+
+# Right Graph: Delay
+ax2.bar(variants, delay, color=['royalblue', 'darkorange', 'seagreen'])
+ax2.set_title('Average Delay (ms)')
+ax2.set_xlabel('TCP Variant')
+ax2.set_ylabel('Milliseconds (ms)')
+ax2.grid(axis='y', linestyle='--', alpha=0.5)
+
+plt.tight_layout()
+plt.show()
