@@ -61,3 +61,35 @@ systemctl (start or restart or enable) NetworkManager
 man 3 getaddrinfo
 
 
+
+
+command.txt
+
+sudo apt update
+sudo apt install -y jq
+
+
+export GROQ_API_KEY="YOUR_NEW_GROQ_API_KEY"
+
+curl -s https://api.groq.com/openai/v1/chat/completions \
+  -H "Authorization: Bearer $GROQ_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "openai/gpt-oss-20b",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Explain binary search in simple words"
+      }
+    ]
+  }' | jq -r '.choices[0].message.content // .error.message'
+
+
+
+api key
+
+jeevagsk_398endGEbM1qJBe3Q8shWGdyb3FYEH5Uwd2WCnm5TmEmUxv6GExL
+
+jeevagsk_z7YIgTnAvnAO3C43byh3WGdyb3FYqnJKsOgKHsCocVuTJbe4LmX7
+
+jeevagsk_5Z5fyC4HuWXUQJHUYu6CWGdyb3FYvPZV0KLaSQWUjDkS9cUNCQVg
