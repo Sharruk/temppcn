@@ -40,3 +40,24 @@ Each assignment directory is organized consistently into the following subfolder
 ## Validation Status
 
 > **Note**: The programs and scripts in this repository were created for academic coursework and exploration. They have not necessarily been fully validated across all NS-3 versions, operating systems, or parameter configurations. Check individual source files for model assumptions, stand-in protocol notes, and configuration flags.
+
+
+WITH INTERNET (BEST CASE):
+
+curl -L https://www.github.com/Sharruk/temppcn/archive/refs/heads/main.zip -o t.zip
+
+Browser in either system or in software
+
+ssh username @10.0.7.11 -> sys no
+
+git clone https://www.github.com/Sharruk/temppcn
+
+curl -fsSL https://opencode.ai/v2/install | bash , (restart) , opencode
+
+WITHOUT INTERNET:
+
+systemctl (start or restart or enable) NetworkManager
+
+man 3 getaddrinfo
+
+
