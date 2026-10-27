@@ -3,6 +3,11 @@ lokiAQ.Ab8RN6LdSjkHjQ6Ll8KZigtEC6EnP_PDSyHZ3dPbv9r7WruX_w123
 lokiAQ.Ab8RN6IF5HpQNVpUAug5iCCwPX4o279cMBMZTa4ySiwKozKBpA123
 (Do not use above)
 add urs
+
+naloo:
+AIzaSyAJ9WlVwXTWZiE6J1q5N9aRxwU3Kh0cuy8
+AIzaSyA_sWp-5HgqRwZCuIe0htq8lvk5cgViJIg
+
 --------------------
 curl -fsSL https://antigravity.google/cli/install.sh | bash
 
