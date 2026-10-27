@@ -1,0 +1,51 @@
+gemini
+lokiAQ.Ab8RN6LdSjkHjQ6Ll8KZigtEC6EnP_PDSyHZ3dPbv9r7WruX_w123
+lokiAQ.Ab8RN6IF5HpQNVpUAug5iCCwPX4o279cMBMZTa4ySiwKozKBpA123
+(Do not use above)
+add urs
+--------------------
+curl -fsSL https://antigravity.google/cli/install.sh | bash
+
+wget -O install.sh https://antigravity.google/cli/install.sh
+less install.sh
+bash install.sh
+
+curl -fL https://antigravity.google/cli/install.sh -o install.sh
+less install.sh
+bash install.sh
+-------------------
+
+mkdir -p ~/.gemini/antigravity-cli
+
+cat > ~/.gemini/antigravity-cli/settings.json <<'EOF'
+{
+  "modelProvider": "gemini"
+}
+EOF
+
+export GEMINI_API_KEY="YOUR_API_KEY"
+
+agy
+
+
+--------------------------
+
+npm install -g @google/gemini-cli  
+
+gemini --version
+
+gemini
+
+/model
+
+----------------
+
+in opencode
+/connect
+select google
+paste key
+select model
+
+or
+ npx @google/gemini-cli
+API KEYS:
