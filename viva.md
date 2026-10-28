@@ -1,443 +1,1031 @@
-# P2P vs CDN for Video Streaming – 12 Marks
+# Computer Networks — CAT-1 Viva Preparation Guide
 
-## 1. Introduction
+Since your semester practical is today and the viva questions can come from theory, prepare to explain what a concept is, how it works, why it is needed, and how it differs from related concepts.
 
-Both **Peer-to-Peer (P2P) networks** and **Content Distribution Networks (CDNs)** are used to deliver video content to a large number of users.
+I've organized this around your original syllabus and your professor's CAT-1 portions. I have also included CSMA in detail, because you mentioned that it was asked in another viva.
 
-When the number of viewers suddenly **doubles**, the network must handle increased traffic without causing buffering or delays.
+One distinction: CSMA was not explicitly listed in the CAT-1 topics you shared, so treat it as an additional general Computer Networks viva topic.
 
-The main difference is:
+# UNIT 1 — Computer Networks and Application Layer
 
-- **P2P:** Viewers can also act as **uploaders** and share video data with other viewers.
-- **CDN:** Video is distributed through **multiple geographically distributed servers** located close to users.
+## 1. Computer Networks: Basic Concepts
 
----
+### What is a computer network?
 
-# 2. P2P Network
+A computer network is a collection of interconnected devices that communicate and exchange data using communication links and protocols.
 
-In a P2P network, users download video data from other peers as well as the original server.
+Examples: The Internet, a college Wi-Fi network, and a LAN connecting computers in a laboratory.
 
-### Normal Traffic
+### What is the Internet?
 
-```text
-                    Original Server
-                         |
-                         v
-                    Peer 1
-                   /      \
-                  v        v
-              Peer 2     Peer 3
-                /  \       |
-               v    v      v
-            Peer 4 Peer 5 Peer 6
+The Internet is a global network of interconnected networks that communicate using the TCP/IP protocol suite.
+
+Important components include:
+
+- Hosts/end systems: Computers, phones and servers running network applications.
+- Communication links: Fibre-optic cables, copper cables and wireless links.
+- Packet switches: Routers and switches that forward data.
+- Protocols: Rules governing how devices communicate.
+- ISPs: Organizations that provide Internet connectivity.
+
+### What is the network edge?
+
+The network edge consists of the end systems where network applications run.
+
+Examples include your laptop, a web server and a mobile phone.
+
+### What is the network core?
+
+The network core consists mainly of interconnected packet switches and high-speed links that move packets between networks.
+
+Viva question: What is the difference between forwarding and routing?
+
+- Forwarding: Moving a packet from an input interface to the appropriate output interface of a router.
+- Routing: Determining the path packets should take through a network.
+
+Routing decides the path; forwarding moves the packet along that path.
+
+## 2. Packet Switching vs Circuit Switching
+
+### Circuit switching
+
+A dedicated communication path is established between two endpoints before communication begins. Resources are reserved for the connection.
+
+Example: Traditional telephone networks.
+
+### Packet switching
+
+Data is divided into packets, which share network links with packets from other connections.
+
+Example: Internet communication.
+
+| Circuit switching                               | Packet switching                     |
+| ----------------------------------------------- | ------------------------------------ |
+| Dedicated resources/path                        | Links shared by multiple users       |
+| Resources can remain reserved when idle         | Resources are used as packets arrive |
+| Predictable service when resources are reserved | Delay can vary because of queuing    |
+| Setup may be required                           | No dedicated circuit is necessary    |
+
+Viva question: Why does packet switching cause queuing delay?
+
+If packets arrive at a router faster than its outgoing link can transmit them, packets wait in a buffer. This waiting time is called queuing delay. If the buffer fills up, additional packets may be dropped.
+
+## 3. Network Performance and Delay
+
+You should know these four delay components.
+
+| Delay              | Meaning                                                                    |
+| ------------------ | -------------------------------------------------------------------------- |
+| Processing delay   | Time needed to examine packet headers and decide where to forward a packet |
+| Queuing delay      | Time spent waiting in a router's buffer                                    |
+| Transmission delay | Time required to put all packet bits onto a link                           |
+| Propagation delay  | Time taken by the signal to travel through the link                        |
+
+The formulas are:
+
+\\[ d\_{\text{trans}}=\frac{L}{R} \\]
+
+\\[ d\_{\text{prop}}=\frac{d}{s} \\]
+
+Where \\(L\\) is packet size in bits, \\(R\\) is link rate in bits/second, \\(d\\) is physical distance, and \\(s\\) is propagation speed.
+
+Total nodal delay is:
+
+\\[ d\_{\text{nodal}}=d\_{\text{proc}}+d\_{\text{queue}}+ d\_{\text{trans}}+d\_{\text{prop}} \\]
+
+Viva question: What is the difference between transmission and propagation delay?
+
+Transmission delay depends on the packet size and link bandwidth. Propagation delay depends on the physical distance and signal propagation speed.
+
+Viva question: What is throughput?
+
+Throughput is the rate at which data is successfully transferred from source to destination, usually measured in bits per second. In a path with several links, the slowest bottleneck link often limits the achievable throughput.
+
+## 4. Protocol Layers
+
+### Why do we use layering?
+
+Layering divides network communication into smaller functions. Each layer performs specific tasks and provides services to the layer above it.
+
+Advantages include modularity, simpler design, interoperability and easier troubleshooting.
+
+### The five-layer Internet model
+
+5\. Application
+
+HTTP, DNS, SMTP — network applications and their protocols
+
+4\. Transport
+
+TCP, UDP — communication between application processes
+
+3\. Network
+
+IP — logical addressing and routing
+
+2\. Link
+
+Ethernet, Wi-Fi — delivery over a local link
+
+1\. Physical
+
+Transmits raw bits through electrical, optical or radio signals
+
+### What is encapsulation?
+
+When data moves down the layers on the sending device, each layer may add its own header.
+
+```
+Application data
+       ↓
+Transport segment
+       ↓
+IP datagram
+       ↓
+Link-layer frame
+       ↓
+Bits transmitted over the medium
 ```
 
-As more viewers join, they can also contribute upload bandwidth.
+At the receiver, the headers are processed and removed as data moves up the layers. This is called decapsulation.
 
-### When Viewers Double
+### OSI model: seven layers
 
-Suppose there are initially **100 viewers** and suddenly the number becomes **200**.
+Remember the order:
 
-```text
-             Original Server
-                    |
-          ---------------------
-          |        |          |
-        Peer     Peer       Peer
-       /   \      | \        / \
-      v     v     v  v      v   v
-   New   New    New New   New  New
-  Peers  Peers  Peers      Peers
+Application → Presentation → Session → Transport → Network → Data Link → Physical
+
+Functions:
+
+- Application: Provides network services to applications.
+- Presentation: Data representation, encryption/decryption and compression.
+- Session: Establishes and manages communication sessions.
+- Transport: End-to-end process communication, reliability and flow control.
+- Network: Routing and logical addressing.
+- Data Link: Framing, link-level delivery and error detection.
+- Physical: Transmission of bits.
+
+Likely viva question: Which layer does IP belong to?
+
+The network layer.
+
+Which layer does TCP belong to?
+
+The transport layer.
+
+Which layer does HTTP belong to?
+
+The application layer.
+
+# 5. HTTP, Cookies and Web Caching
+
+## What is HTTP?
+
+HTTP stands for Hypertext Transfer Protocol. It is an application-layer protocol used to transfer web resources between a client and a server.
+
+It follows the client-server model:
+
+1. The browser sends an HTTP request.
+2. The web server processes it.
+3. The server returns an HTTP response.
+
+### Why is HTTP called stateless?
+
+HTTP does not inherently remember the previous request when processing a new request. Cookies and other session mechanisms can be used to maintain state across requests.
+
+### Common HTTP methods
+
+| Method | Purpose                                           |
+| ------ | ------------------------------------------------- |
+| GET    | Retrieve a resource                               |
+| POST   | Submit data, often to create or process something |
+| PUT    | Create or replace a resource at a specified URI   |
+| DELETE | Delete a resource                                 |
+
+### Persistent vs non-persistent HTTP
+
+- Non-persistent HTTP: A separate TCP connection is used for each requested object in the basic HTTP/1.0 model.
+- Persistent HTTP: Multiple requests and responses can use the same TCP connection, reducing connection-establishment overhead.
+
+### What are cookies?
+
+Cookies allow a website to maintain user-related state.
+
+The server sends `Set-Cookie`; the browser stores the cookie and sends it back using `Cookie` in subsequent matching requests.
+
+Uses include login sessions, shopping carts and personalization.
+
+### What is web caching?
+
+A web cache stores copies of previously requested resources.
+
+- Cache hit: The requested object is available in the cache and can be returned without contacting the origin server.
+- Cache miss: The cache obtains the object from the origin server and may store a copy for future requests.
+
+### What is Conditional GET?
+
+A cache can check whether an object has changed by sending a conditional request, such as one containing `If-Modified-Since`.
+
+- If unchanged, the server may return 304 Not Modified, allowing the cache to reuse its copy.
+- If changed, the server returns the updated object, normally with 200 OK.
+
+Likely viva question: How do cookies and caching differ?
+
+Cookies primarily maintain user state and personalization. Caching reduces repeated data transfer, response time and load on the origin server.
+
+# 6. DNS — Domain Name System
+
+### What is DNS?
+
+DNS is a distributed, hierarchical naming system that translates domain names, such as `www.example.com`, into IP addresses and provides other naming information.
+
+Without DNS, users would generally need to remember IP addresses instead of convenient domain names.
+
+### How does DNS resolve a name?
+
+A typical resolution process involves:
+
+1. The host asks its local DNS resolver.
+2. If the answer is not cached, the resolver queries the DNS hierarchy as needed.
+3. Root DNS servers help identify the appropriate top-level domain (TLD) servers.
+4. TLD servers help identify the authoritative DNS server.
+5. The authoritative server provides the relevant record.
+6. The resolver returns the result to the host and may cache it.
+
+```
+Host / Browser
+      ↓
+Local DNS Resolver
+      ↓
+Root DNS Server
+      ↓
+TLD DNS Server
+      ↓
+Authoritative DNS Server
+      ↓
+IP address returned
 ```
 
-The new peers can obtain pieces of the video from existing peers.
+This is a simplified lookup sequence; caching can eliminate some queries.
 
-### Advantages During a Surge
+### Recursive vs iterative queries
 
-- Upload capacity increases as more peers join.
-- Traffic is distributed among many users.
-- The original server does not need to send the complete video to every viewer.
-- Can scale well for very large numbers of viewers.
+- Recursive query: The queried DNS server is asked to obtain the final answer or return an error.
+- Iterative query: The queried server returns the answer if it knows it; otherwise, it can refer the requester to another DNS server.
 
-### Disadvantages
+### Important DNS records
 
-- Performance depends on **peer availability and upload bandwidth**.
-- Peers may leave suddenly.
-- Upload speeds may be different for different users.
-- Maintaining peer connections can introduce complexity.
-- Quality can become unpredictable during sudden changes in peer availability.
+| Record | Purpose                                     |
+| ------ | ------------------------------------------- |
+| A      | Maps a name to an IPv4 address              |
+| AAAA   | Maps a name to an IPv6 address              |
+| NS     | Identifies a DNS name server                |
+| CNAME  | Defines an alias for another canonical name |
+| MX     | Identifies mail servers for a domain        |
 
----
+Likely viva question: Why is DNS distributed?
 
-# 3. CDN
+A distributed hierarchy improves scalability and administration, avoids dependence on one central database and supports caching to reduce lookup load and delay.
 
-A CDN consists of multiple geographically distributed servers called **edge servers**.
+# 7. P2P — Peer-to-Peer Applications
 
-Instead of every viewer contacting the origin server, users are directed to a nearby CDN server.
+### What is P2P?
 
-### Normal Traffic
+In a peer-to-peer network, participating hosts can act as both consumers and providers of resources. A peer may download data and upload it to other peers.
 
-```text
-                    Origin Server
-                         |
-              ---------------------
-              |         |          |
-              v         v          v
-           CDN 1      CDN 2      CDN 3
-             |          |          |
-           Users      Users      Users
+### Client-server vs P2P
+
+| Client-server                                  | P2P                                    |
+| ---------------------------------------------- | -------------------------------------- |
+| Server provides content to clients             | Peers exchange content with each other |
+| Server's upload capacity can be a bottleneck   | Peers contribute upload capacity       |
+| Server infrastructure must handle demand       | Some demand is distributed among peers |
+| Scalability depends heavily on server capacity | Can achieve self-scalability           |
+
+### What is self-scalability?
+
+As new peers join a P2P distribution system, they introduce additional demand but may also contribute upload bandwidth. This additional capacity can help serve other peers.
+
+### BitTorrent
+
+BitTorrent distributes files in chunks:
+
+- Peers download chunks from other peers.
+- A tracker helps peers discover one another.
+- The rarest-first strategy prioritizes chunks that are less widely available.
+- The tit-for-tat mechanism encourages cooperation by favouring peers that upload data to others.
+
+Likely viva question: What happens if one peer disconnects?
+
+Other peers may still have the required chunks, allowing the download to continue. Performance nevertheless depends on which chunks remain available and how much upload capacity is available.
+
+# 8. Video Streaming and CDN
+
+## What is a CDN?
+
+A Content Distribution Network (CDN) uses geographically distributed servers to store and deliver content closer to end users.
+
+Instead of every viewer receiving video directly from one origin server, requests can be served by suitable CDN servers.
+
+### How does a CDN improve video delivery?
+
+1. Content is stored or replicated at CDN locations.
+2. A viewer requests a video.
+3. The CDN directs the viewer to a suitable server.
+4. The server delivers video content to the viewer.
+
+Benefits include reduced latency, lower origin-server load and improved scalability.
+
+### Enter Deep vs Bring Home
+
+- Enter Deep: Deploys smaller clusters of servers deep inside access networks, close to users.
+- Bring Home: Places large server clusters at a smaller number of strategically located sites, such as major ISP points of presence.
+
+### What is DASH?
+
+DASH stands for Dynamic Adaptive Streaming over HTTP.
+
+Video is divided into segments, often encoded at multiple quality levels. The client chooses which quality level to request based on current network conditions and available resources.
+
+If bandwidth drops, the client can request lower-quality segments. If bandwidth improves, it can request higher-quality segments.
+
+Likely viva question: CDN vs P2P?
+
+A CDN distributes content through managed edge servers, whereas P2P relies partly on upload bandwidth contributed by participating peers. Both can distribute traffic and reduce dependence on one origin server.
+
+# UNIT 2 — Transport Layer
+
+## 9. What is the Transport Layer?
+
+The transport layer provides logical communication between application processes running on different hosts.
+
+The two main Internet transport protocols are TCP and UDP.
+
+### What is multiplexing and demultiplexing?
+
+- Multiplexing: At the sender, transport-layer data from different applications is collected and passed to the network layer.
+- Demultiplexing: At the receiver, port information helps deliver incoming segments to the correct application socket.
+
+### What are port numbers?
+
+Port numbers identify application-level endpoints on a host.
+
+Examples of commonly used default ports include:
+
+- HTTP: 80
+- HTTPS: 443
+- DNS: 53
+- SMTP: 25
+
+The actual port used can vary by configuration and application.
+
+## 10. TCP vs UDP
+
+| TCP                                          | UDP                                                           |
+| -------------------------------------------- | ------------------------------------------------------------- |
+| Connection-oriented                          | Connectionless                                                |
+| Reliable, in-order byte-stream delivery      | No guarantee of reliable or ordered delivery                  |
+| Provides flow control and congestion control | Does not provide TCP-style flow control or congestion control |
+| Connection establishment adds overhead       | No transport connection setup                                 |
+| 20-byte minimum TCP header                   | 8-byte UDP header                                             |
+
+### What is UDP?
+
+UDP (User Datagram Protocol) is a lightweight connectionless transport protocol.
+
+Its header contains:
+
+- Source port
+- Destination port
+- Length
+- Checksum
+
+UDP is commonly used for DNS queries, real-time media and applications where low overhead matters. Applications may add their own reliability mechanisms when needed.
+
+### What is TCP?
+
+TCP (Transmission Control Protocol) provides a reliable, ordered byte stream between application processes.
+
+TCP uses:
+
+- Sequence numbers
+- Acknowledgements
+- Checksums
+- Retransmission timers
+- Flow control
+- Congestion control
+- Connection establishment and termination
+
+Likely viva question: Why use UDP when TCP is reliable?
+
+UDP has lower protocol overhead and does not require connection establishment. Some applications prefer timely delivery over retransmission delays or implement reliability themselves.
+
+# 11. Reliable Data Transfer — RDT 1.0 to RDT 3.0
+
+This is one of the most important topics in your professor's CAT-1 list.
+
+The idea is to progressively build a reliable protocol as the underlying channel becomes less reliable.
+
+| Version | Problem addressed                   | Mechanism                                |
+| ------- | ----------------------------------- | ---------------------------------------- |
+| RDT 1.0 | Perfectly reliable channel          | Basic sending and receiving              |
+| RDT 2.0 | Bit errors                          | Checksum and ACK/NAK                     |
+| RDT 2.1 | Corrupted ACK/NAK                   | Sequence numbers and duplicate detection |
+| RDT 2.2 | Same corruption problem without NAK | Duplicate ACKs                           |
+| RDT 3.0 | Packet or ACK loss                  | Timer and retransmission                 |
+
+### RDT 1.0
+
+The channel is assumed to be perfectly reliable. The sender sends data, and the receiver delivers it.
+
+### RDT 2.0
+
+A checksum detects bit corruption. The receiver sends ACK for a correct packet and NAK for a corrupted packet. The sender retransmits following a NAK.
+
+### RDT 2.1
+
+ACK/NAK messages themselves may be corrupted. Sequence numbers 0 and 1 are added so that the receiver can detect duplicate packets and avoid delivering duplicate data.
+
+### RDT 2.2
+
+NAKs are removed. The receiver instead acknowledges the last correctly received packet. A duplicate ACK signals that the sender should retransmit the current packet.
+
+### RDT 3.0
+
+The channel can now lose data packets or ACKs. The sender starts a timer after sending a packet and retransmits if the correct ACK does not arrive before timeout. Sequence numbers allow the receiver to detect duplicates caused by retransmissions.
+
+Likely viva question: Why does RDT 3.0 need a timer?
+
+Because absence of an ACK could mean the data packet or ACK was lost. The timer allows the sender to recover rather than waiting forever.
+
+# 12. RTT, EstimatedRTT and RTO
+
+### What is RTT?
+
+Round-Trip Time (RTT) is the time from sending a segment until its acknowledgement returns.
+
+TCP estimates RTT because network delay changes over time.
+
+### EstimatedRTT
+
+\\[ EstimatedRTT=(1-\alpha)EstimatedRTT+\alpha SampleRTT \\]
+
+Typically, in your course notes:
+
+\\[ \alpha=0.125 \\]
+
+This weighted average smooths out sudden variations.
+
+### DevRTT
+
+\\[ DevRTT=(1-\beta)DevRTT+ \beta|SampleRTT-EstimatedRTT| \\]
+
+Typically:
+
+\\[ \beta=0.25 \\]
+
+DevRTT estimates the variation in measured RTT.
+
+### Retransmission timeout
+
+\\[ \boxed{RTO=EstimatedRTT+4DevRTT} \\]
+
+The additional margin helps avoid unnecessary retransmissions when ACKs are delayed.
+
+Likely viva question: Why not set RTO equal to the latest RTT?
+
+RTT varies because of congestion, queuing and routing changes. Using only the latest sample can make the timeout fluctuate too much.
+
+# 13. TCP Sequence Numbers and Acknowledgements
+
+Remember these four rules.
+
+1. TCP sequence numbers count bytes, not packets.
+2. A SYN consumes one sequence number.
+3. A FIN consumes one sequence number.
+4. An ACK number indicates the next byte expected.
+
+### Example
+
+Suppose:
+
+```
+Client ISN = 1000
+Server ISN = 5000
 ```
 
-### When Viewers Double
+The three-way handshake is:
 
-When the number of viewers suddenly doubles:
+```
+Client → Server: SYN
+SEQ = 1000
 
-```text
-                    Origin Server
-                         |
-              ---------------------
-              |         |          |
-              v         v          v
-           CDN 1      CDN 2      CDN 3
-          / | \       / | \       / | \
-         v  v  v     v  v  v     v  v  v
-       Users        Users        Users
-       + New        + New        + New
-       Users        Users        Users
+Server → Client: SYN + ACK
+SEQ = 5000
+ACK = 1001
+
+Client → Server: ACK
+SEQ = 1001
+ACK = 5001
 ```
 
-The additional viewers are distributed across different CDN edge servers.
+Why does the server acknowledge 1001? Because the client's SYN consumes one sequence number.
 
-If the video is already cached at the edge servers, the CDN can serve the additional viewers **without repeatedly contacting the origin server**.
+Now suppose the client sends 300 bytes starting at sequence number 1001.
 
----
+\\[ ACK=1001+300=\boxed{1301} \\]
 
-# 4. Comparison During Sudden Increase
+The server acknowledges 1301, meaning it expects byte 1301 next.
 
-| Feature | P2P | CDN |
-|---|---|---|
-| Main source | Other peers | CDN edge servers |
-| Traffic distribution | Among peers | Among CDN servers |
-| Effect of more users | More upload capacity can become available | Load distributed across edge servers |
-| Server load | Can be reduced significantly | Reduced using caching and distribution |
-| Reliability | Depends on peer availability | Generally more predictable |
-| Performance | Variable | More consistent |
-| Scalability | High | Very high |
-| Control over quality | Lower | Higher |
-| Infrastructure | Less centralized | Requires distributed infrastructure |
+### Likely viva question: Does a pure ACK consume sequence numbers?
 
----
+No. An ACK-only segment with no data and no SYN/FIN does not advance the sequence number.
 
-# 5. Which Handles the Surge More Efficiently?
+# 14. TCP Flow Control vs Congestion Control
 
-### **CDN is generally more efficient and reliable for a sudden doubling of viewers.**
+These are easy to confuse in a viva.
 
-The main reasons are:
+### Flow control
 
-### 1. Distributed servers
+Prevents the sender from overwhelming the receiver.
 
-A CDN has multiple edge servers, so the additional viewers can be distributed across different locations.
+TCP uses the receiver's advertised window (`rwnd`) to indicate how much data the receiver can currently accept.
 
-### 2. Caching
+### Congestion control
 
-If the video is already cached at the edge server, the CDN does not need to retrieve it repeatedly from the origin server.
+Prevents the sender from overloading the network.
 
-### 3. Reduced latency
+TCP uses its congestion window (`cwnd`) to regulate the amount of unacknowledged data in flight.
 
-Users are connected to a geographically closer CDN server, reducing network delay.
+Memory trick:
 
-### 4. Better traffic management
+- Flow control → receiver protection.
+- Congestion control → network protection.
 
-CDNs use mechanisms such as **load balancing** to distribute users among available servers.
+The sender's transmission is typically limited by the smaller of the congestion window and receive window.
 
-### 5. Predictable performance
+# 15. TCP Congestion Control
 
-Unlike P2P, CDN performance does not depend heavily on whether individual users remain online or have sufficient upload bandwidth.
+This is another high-priority topic from your professor.
 
----
+## Slow Start
 
-# 6. Overall Traffic Behavior
+At the beginning, TCP begins with a small congestion window.
 
-### P2P
+In the model used in your notes, the initial window is 1 MSS. With each ACK received, the window increases, resulting in approximately exponential growth—roughly doubling per RTT.
 
-```text
-More Viewers
-     ↓
-More Peers
-     ↓
-More Possible Upload Sources
-     ↓
-Traffic Distributed Among Peers
-     ↓
-Reduced Origin Server Load
+```
+RTT:   1    2    3    4    5
+cwnd:  1 →  2 →  4 →  8 → 16 MSS
 ```
 
-### CDN
+## Congestion Avoidance
 
-```text
-More Viewers
-     ↓
-Load Distributed Across Edge Servers
-     ↓
-Cached Video Served Locally
-     ↓
-Less Traffic to Origin Server
-     ↓
-Faster and More Reliable Streaming
+When `cwnd` reaches the slow-start threshold (`ssthresh`), TCP switches to congestion avoidance.
+
+The congestion window increases approximately 1 MSS per RTT, a linear increase.
+
+## Three duplicate ACKs
+
+Three duplicate ACKs suggest that a segment is missing while later segments are still reaching the receiver.
+
+TCP Reno performs Fast Retransmit without waiting for a timeout and enters Fast Recovery.
+
+Using the simplified Reno rules employed in your problem sheet:
+
+\\[ ssthresh=\frac{cwnd}{2} \\]
+
+During Fast Recovery:
+
+\\[ cwnd=ssthresh+3\ MSS \\]
+
+When the retransmitted segment is acknowledged, `cwnd` returns to approximately `ssthresh`, and TCP continues in congestion avoidance.
+
+## Timeout
+
+Timeout is treated as a more serious indication of congestion.
+
+\\[ ssthresh=\frac{cwnd}{2} \\]
+
+\\[ cwnd=1\ MSS \\]
+
+TCP retransmits the missing segment and starts slow start again, then enters congestion avoidance when the threshold is reached.
+
+### Example from your problem set
+
+Given:
+
+\\[ cwnd=24\ MSS \\]
+
+Then:
+
+\\[ ssthresh=24/2=12\ MSS \\]
+
+- Three duplicate ACKs: During Fast Recovery, `cwnd = 12 + 3 = 15 MSS`; after acknowledgement, it becomes 12 MSS.
+- Timeout: `cwnd = 1 MSS`, and TCP returns to Slow Start.
+
+### Likely viva question: Why is the response to timeout more severe?
+
+A timeout suggests the sender has not received timely feedback and may indicate more serious congestion. Resetting `cwnd` to 1 MSS forces TCP to probe available capacity again cautiously.
+
+# UNIT 3 — Network Layer and Classful Addressing
+
+## 16. What does the Network Layer do?
+
+The network layer transfers packets from a source host to a destination host across multiple interconnected networks.
+
+Its key tasks include:
+
+- Logical addressing
+- Routing
+- Forwarding
+- Packet handling across networks
+
+The Internet Protocol (IP) provides addressing and best-effort packet delivery.
+
+## 17. Classful IPv4 Addressing
+
+An IPv4 address has 32 bits, usually written in four decimal octets.
+
+Example:
+
+```
+192.168.1.25
 ```
 
----
+In classful addressing, the first octet determines the address class.
 
-# 7. Conclusion
+| Class | First octet | Default mask                      | Main use              |
+| ----- | ----------- | --------------------------------- | --------------------- |
+| A     | 1–126       | 255.0.0.0 (`/8`)                  | Large networks        |
+| B     | 128–191     | 255.255.0.0 (`/16`)               | Medium networks       |
+| C     | 192–223     | 255.255.255.0 (`/24`)             | Small networks        |
+| D     | 224–239     | No classful network/host division | Multicast             |
+| E     | 240–255     | No classful network/host division | Reserved/experimental |
 
-Both P2P and CDN networks can handle an increase in video-streaming users by **distributing network traffic**.
+127 is reserved for loopback, and 0 has special uses.
 
-In **P2P**, the additional viewers can also become sources of video data, allowing the system to scale with the number of peers. However, its performance depends on peer availability and upload capacity.
+### Network ID and Host ID
 
-In a **CDN**, traffic is distributed among geographically distributed edge servers, and cached content can be delivered without repeatedly contacting the origin server. Therefore, **CDNs are generally better suited for sudden surges in viewers because they provide more predictable performance, lower latency, effective load balancing, and reduced congestion at the origin server.**
+For Class C:
 
+```
+IP address: 192.168.1.25
 
-
-
-# Reliable Data Transfer Protocol for Bit Errors, Corrupted ACKs and Packet Loss – 12 Marks
-
-## 1. Introduction
-
-A reliable data transfer (RDT) protocol ensures that data sent from a **sender** reaches the **receiver** correctly and in the proper order, even when the underlying channel is unreliable.
-
-The protocol can be developed progressively:
-
-1. **Bit errors → checksum and retransmission**
-2. **Corrupted ACKs → sequence numbers**
-3. **Packet loss → timeout and retransmission**
-
----
-
-## 2. Handling Bit Errors
-
-First, assume that packets may be **corrupted**, but are not lost.
-
-The sender adds a **checksum** to each packet. The receiver checks the checksum.
-
-- If correct → receiver sends **ACK**.
-- If corrupted → receiver sends **NAK**.
-- On receiving NAK, sender retransmits the packet.
-
-### Sequence Diagram
-
-```text
-Sender                         Receiver
-  |                               |
-  |-------- Data + Checksum ----->|
-  |                               |
-  |     Packet corrupted          |
-  |                               |
-  |<------------- NAK ------------|
-  |                               |
-  |-------- Retransmit ---------->|
-  |                               |
-  |<------------- ACK ------------|
-  |                               |
+Network ID: 192.168.1
+Host ID:    25
 ```
 
-Thus, corrupted data is detected and retransmitted.
+The default mask is `/24`, meaning the first 24 bits form the network portion.
 
----
+### Network, broadcast and usable addresses
 
-# 3. Handling Corrupted Acknowledgments
+For the classful Class C network `192.168.1.0/24`:
 
-Now assume that **ACK/NAK messages themselves can also be corrupted**.
-
-If the sender receives a corrupted ACK/NAK, it cannot know whether the receiver correctly received the packet.
-
-To solve this, **sequence numbers** are added to packets.
-
-For example, packets use sequence numbers **0 and 1** alternately.
-
-The receiver uses the sequence number to identify duplicate packets.
-
-### Sequence Diagram
-
-```text
-Sender                         Receiver
-  |                               |
-  |------ Packet (Seq = 0) ------>|
-  |                               |
-  |<--------- ACK (0) ------------|
-  |                               |
-  |     ACK becomes corrupted     |
-  |                               |
-  |<------ Corrupted ACK ---------|
-  |                               |
-  |------ Packet (Seq = 0) ------>|
-  |                               |
-  |  Duplicate packet detected    |
-  |                               |
-  |<--------- ACK (0) ------------|
-  |                               |
-  |------ Packet (Seq = 1) ------>|
-  |                               |
-  |<--------- ACK (1) ------------|
+```
+Network address:  192.168.1.0
+First host:       192.168.1.1
+Last host:        192.168.1.254
+Broadcast:        192.168.1.255
 ```
 
-The receiver does **not deliver the duplicate packet again**. It simply sends the ACK again.
+There are eight host bits, so usable host addresses are:
 
-Thus, sequence numbers prevent **duplicate delivery**.
+\\[ 2^8-2=\boxed{254} \\]
 
----
+The subtraction of two accounts for the network and broadcast addresses.
 
-# 4. Handling Packet Loss
+### Limited vs directed broadcast
 
-Now assume that packets or acknowledgments can be **lost**.
+- Limited broadcast: `255.255.255.255`, intended for the local network and not forwarded by routers.
+- Directed broadcast: An address with the destination network's network bits and all host bits set to 1. For example, `192.168.1.255` is the directed broadcast address for the Class C `/24` network `192.168.1.0/24`.
 
-If the sender waits forever for an ACK, communication may stop.
+Routers commonly disable directed-broadcast forwarding to limit abuse.
 
-Therefore, the sender uses a **timer**.
+### Likely viva question: Why does Class D have no Network ID and Host ID?
 
-- Sender transmits a packet and starts a timer.
-- If ACK arrives → send the next packet.
-- If ACK is lost or packet is lost → timer expires.
-- Sender retransmits the packet.
+Because Class D addresses identify multicast groups rather than being divided into a network portion and a host portion as Class A, B and C are.
 
-### Sequence Diagram
+## 18. NAT and IPv6
 
-```text
-Sender                         Receiver
-  |                               |
-  |------ Packet (Seq = 0) ------>|
-  |                               |
-  |<--------- ACK (0) ------------|
-  |                               |
-  |------ Packet (Seq = 1) ------>|
-  |          X                    |
-  |       Packet lost             |
-  |                               |
-  |       Timer expires           |
-  |                               |
-  |------ Retransmit Seq = 1 ---->|
-  |                               |
-  |<--------- ACK (1) ------------|
+### What is NAT?
+
+Network Address Translation (NAT) modifies IP address information as packets pass through a network device.
+
+A common use is allowing multiple private-network devices to share a public IPv4 address, often distinguished by transport-layer port numbers.
+
+### Why is NAT used?
+
+- Conserves public IPv4 addresses.
+- Allows internal devices to use private addresses.
+- Provides a boundary between internal addressing and public addressing.
+
+NAT is not a replacement for proper security controls.
+
+### What is IPv6?
+
+IPv6 is the Internet Protocol version designed with 128-bit addresses, compared with IPv4's 32-bit addresses.
+
+An IPv6 address is written in hexadecimal groups separated by colons.
+
+Example:
+
+```
+2001:db8::1
 ```
 
-If the ACK is lost:
+### IPv4 vs IPv6
 
-```text
-Sender                         Receiver
-  |                               |
-  |------ Packet (Seq = 0) ------>|
-  |                               |
-  |<--------- ACK (0) ---X        |
-  |          ACK lost             |
-  |                               |
-  |       Timer expires           |
-  |                               |
-  |------ Retransmit Seq = 0 ---->|
-  |                               |
-  |   Duplicate detected          |
-  |                               |
-  |<--------- ACK (0) ------------|
+| IPv4                          | IPv6                                                        |
+| ----------------------------- | ----------------------------------------------------------- |
+| 32-bit address                | 128-bit address                                             |
+| Dotted-decimal notation       | Colon-separated hexadecimal notation                        |
+| Much smaller address space    | Vastly larger address space                                 |
+| Supports broadcast addressing | Does not use broadcast; uses multicast and other mechanisms |
+
+# EXTRA GENERAL NETWORKING VIVA — CSMA
+
+You specifically mentioned that a student was asked about CSMA in detail. Learn this section carefully.
+
+## 19. What is CSMA?
+
+CSMA stands for Carrier Sense Multiple Access.
+
+It is a media-access control method used when multiple devices share a communication medium. Before transmitting, a device checks whether the medium is busy or idle.
+
+Its basic principle is:
+
+> Listen before transmitting.
+
+For example, suppose multiple devices share a wireless channel. If one device is already transmitting, another device senses the busy channel and waits rather than transmitting immediately.
+
+## 20. How does CSMA work?
+
+1\. A device has data to send
+
+2\. Sense the channel
+
+Channel idle
+
+Transmit according to the CSMA variant
+
+Channel busy
+
+Wait or defer transmission
+
+3\. Transmit and handle any collision according to the protocol
+
+### Why can collisions still occur?
+
+Even if two devices sense an idle channel, they may begin transmitting at nearly the same time. Because signals take time to propagate through the medium, one device's transmission may not yet be detectable at the other device.
+
+Thus, carrier sensing reduces collisions but cannot eliminate them.
+
+## 21. Types of CSMA
+
+### 1-persistent CSMA
+
+- If the channel is idle, transmit immediately.
+- If the channel is busy, keep sensing.
+- As soon as the channel becomes idle, transmit.
+
+Advantage: Low waiting time.
+
+Disadvantage: Multiple waiting devices may transmit together as soon as the channel becomes idle, increasing collision probability.
+
+### Non-persistent CSMA
+
+- If the channel is idle, transmit.
+- If busy, wait for a random time before sensing again.
+
+Advantage: Reduces collisions.
+
+Disadvantage: May introduce additional delay.
+
+### p-persistent CSMA
+
+This is commonly described for slotted channels:
+
+- When the channel is idle, transmit with probability \\(p\\).
+- With probability \\(1-p\\), defer transmission to a later slot.
+- Continue following the protocol's probability rule while the channel remains idle.
+
+Advantage: Controls the likelihood of simultaneous transmissions.
+
+## 22. CSMA/CD
+
+CSMA/CD = Carrier Sense Multiple Access with Collision Detection.
+
+It was used in traditional shared, half-duplex Ethernet.
+
+### How does CSMA/CD work?
+
+1. A device senses the channel.
+2. If idle, it starts transmitting.
+3. It monitors the medium while transmitting.
+4. If it detects a collision, it stops normal transmission and sends a jam signal.
+5. It waits for a random backoff interval.
+6. It retries transmission.
+
+Ethernet traditionally uses binary exponential backoff: the range from which the random waiting time is chosen expands after repeated collisions, up to a limit.
+
+### Flow
+
+```
+Sense channel
+      ↓
+Is it idle?
+  ↙         ↘
+No           Yes
+Wait       Transmit
+               ↓
+       Collision detected?
+          ↙         ↘
+         No          Yes
+     Complete       Jam signal
+                    ↓
+                 Backoff
+                    ↓
+                  Retry
 ```
 
-The receiver discards the duplicate and sends the ACK again.
+### Important viva question: Is CSMA/CD used in modern Ethernet?
 
----
+Traditional shared, half-duplex Ethernet used CSMA/CD. Modern switched, full-duplex Ethernet normally avoids collisions because each link has dedicated transmit and receive paths; CSMA/CD is not used for ordinary operation on those links.
 
-# 5. Final Reliable Data Transfer Protocol
+## 23. CSMA/CA
 
-The complete protocol therefore uses:
+CSMA/CA = Carrier Sense Multiple Access with Collision Avoidance.
 
-- **Checksum** → detects corrupted packets.
-- **ACK/NAK** → informs the sender about successful or unsuccessful reception.
-- **Sequence numbers** → detect duplicate packets caused by retransmission.
-- **Timer** → detects packet or ACK loss.
-- **Retransmission** → recovers lost or corrupted packets.
+It is associated with Wi-Fi networks, where detecting a collision while transmitting is difficult.
 
-### Overall Operation
+### How does CSMA/CA work?
 
-```text
-        Sender                         Receiver
-          |                               |
-          |--- Data + Checksum + Seq ---->|
-          |                               |
-          |       Check checksum          |
-          |                               |
-          |<------------ ACK -------------|
-          |                               |
-          |       ACK corrupted/lost?      |
-          |                               |
-          |--- Retransmit if required ---->|
-          |                               |
-          |       Duplicate?              |
-          |       Discard + ACK           |
-          |                               |
-          |<------------ ACK -------------|
-```
+1. A device senses the wireless channel.
+2. If the channel is busy, it defers.
+3. When the channel becomes available, it observes the required waiting interval.
+4. It uses a random backoff timer.
+5. When the timer reaches zero, it transmits.
+6. The receiver may send an ACK to confirm successful reception.
+7. If an ACK does not arrive, the sender may retry after applying the protocol's backoff procedure.
 
----
+Wi-Fi may also use RTS/CTS exchanges to help mitigate some collisions, including certain hidden-terminal situations.
 
-## 6. Conclusion
+### CSMA/CD vs CSMA/CA
 
-The reliable data transfer protocol is progressively enhanced to handle different channel problems. **Checksums and ACK/NAK handle bit errors, sequence numbers handle corrupted acknowledgments and duplicate packets, and timers with retransmission handle packet loss.** Together, these mechanisms provide reliable, ordered, and duplicate-free data delivery over an unreliable channel.
+| CSMA/CD                                                             | CSMA/CA                                                      |
+| ------------------------------------------------------------------- | ------------------------------------------------------------ |
+| Collision Detection                                                 | Collision Avoidance                                          |
+| Detects collision while transmitting in traditional shared Ethernet | Attempts to reduce collision probability before transmission |
+| Aborts transmission after detecting collision                       | Uses waiting, random backoff and acknowledgements            |
+| Traditional half-duplex Ethernet                                    | Wi-Fi wireless LANs                                          |
+
+### Follow-up: What is the hidden-terminal problem?
+
+Two wireless devices may both reach the same access point but be unable to hear each other. Each may believe the channel is idle and transmit at the same time, causing a collision at the access point. RTS/CTS can help reduce this problem in some circumstances.
+
+# Likely Viva Questions — Quick Answers
+
+Use these for rapid revision just before you enter the lab.
+
+## Network fundamentals
+
+1\. What is a protocol?
+
+A set of rules defining the format, order and meaning of messages exchanged between communicating entities, along with the actions taken when messages are sent or received.
+
+2\. What is the difference between a router and a switch?
+
+A router forwards packets between IP networks. A conventional Layer 2 switch forwards Ethernet frames within a LAN using MAC addresses.
+
+3\. What is a packet?
+
+A unit of data carried by a packet-switched network. It consists of control information such as headers and a payload.
+
+4\. What is encapsulation?
+
+Adding protocol headers as data moves down the protocol layers on the sending device.
+
+5\. What is the difference between bandwidth and throughput?
+
+Bandwidth is the link's capacity; throughput is the actual rate at which data is successfully delivered.
+
+## HTTP, DNS, P2P and CDN
+
+6\. What is HTTP's default port?
+
+Port 80 for HTTP. HTTPS normally uses port 443.
+
+7\. What is an HTTP status code?
+
+A code in the response indicating the result of the request. For example, 200 means success, 404 means the resource was not found, and 304 means a conditional request's cached representation may be reused.
+
+8\. What is the purpose of DNS caching?
+
+It temporarily stores DNS answers to reduce lookup delay and repeated queries.
+
+9\. What is an authoritative DNS server?
+
+A server that provides authoritative DNS records for the zones it serves.
+
+10\. Why is P2P called self-scalable?
+
+Additional peers can contribute their upload bandwidth as they join, increasing the resources available for distributing content.
+
+11\. Why is a CDN needed?
+
+To distribute content across servers closer to users, reducing latency, origin-server load and long-distance traffic.
+
+12\. What is DASH?
+
+Dynamic Adaptive Streaming over HTTP. It enables the client to request video segments at different quality levels as network conditions change.
+
+## Transport layer
+
+13\. What does a checksum do?
+
+It helps detect corruption in transmitted data. A checksum does not by itself recover corrupted data.
+
+14\. What is a port number?
+
+A number used by the transport layer to identify an application endpoint on a host.
+
+15\. What is the TCP three-way handshake?
+
+SYN → SYN-ACK → ACK. It establishes the TCP connection and synchronizes sequence numbers.
+
+16\. What is a cumulative ACK?
+
+An acknowledgement that indicates the next byte expected, thereby acknowledging all preceding bytes received in order.
+
+17\. What is the difference between flow control and congestion control?
+
+Flow control protects the receiver; congestion control protects the network.
+
+18\. What is the purpose of `ssthresh`?
+
+It marks the threshold used to switch between Slow Start and Congestion Avoidance.
+
+19\. What is Fast Retransmit?
+
+Retransmitting a likely lost segment after three duplicate ACKs rather than waiting for a retransmission timeout.
+
+20\. Why does TCP use a timer?
+
+To retransmit unacknowledged data when the ACK does not arrive within the retransmission timeout.
+
+## IP addressing and CSMA
+
+21\. How many bits are in IPv4 and IPv6 addresses?
+
+IPv4 uses 32 bits; IPv6 uses 128 bits.
+
+22\. What is a subnet mask?
+
+A bit mask that identifies which bits of an IP address belong to the network prefix in a subnetted network.
+
+23\. What is NAT?
+
+Network Address Translation modifies IP addressing information as packets pass through a device, commonly allowing private IPv4 hosts to share public IPv4 addresses.
+
+24\. What is the main principle of CSMA?
+
+Listen before transmitting.
+
+25\. Why do collisions occur in CSMA even though devices sense the channel?
+
+Propagation delay can prevent devices from detecting another device's transmission immediately. Multiple devices may therefore transmit at nearly the same time.
+
+26\. What is binary exponential backoff?
+
+A collision-recovery procedure that increases the range used to select a random retransmission waiting time after repeated collisions.
+
+27\. Why does Wi-Fi use CSMA/CA instead of CSMA/CD?
+
+A wireless device generally cannot reliably detect a collision while transmitting because its own transmitted signal can overwhelm the received signal. Wi-Fi therefore tries to avoid collisions and uses ACKs and retries to handle failures.
+
+# Final revision priorities for today
+
+If time is short, revise these first:
+
+1. CSMA: Definition, operation, collision cause, CSMA/CD vs CSMA/CA.
+2. TCP vs UDP: Services and differences.
+3. RDT 1.0–3.0: What each version adds.
+4. TCP congestion control: Slow Start, Congestion Avoidance, 3 duplicate ACKs and timeout.
+5. DNS: Hierarchy, recursive/iterative queries and records.
+6. HTTP: Statelessness, cookies, caching and Conditional GET.
+7. OSI/Internet layers: Layer functions and examples.
+8. P2P/CDN: Self-scalability, edge servers and DASH.
+9. Classful addressing: Classes, default masks, network/host ID and broadcast.
+10. RTT and delays: The formulas and what each variable means.
+
+Viva tip: When asked about any topic, start with a one-sentence definition, explain its working in three or four steps, and finish with its purpose or an example. If the examiner asks a follow-up, expand from there. You don't have to recite an entire chapter to demonstrate that you understand a concept.
 
 
 
 
-Yes. **This answer is suitable for the 12-mark question you asked.** In fact, it is **better aligned with the wording of the question** than the previous answer because the question specifically asks you to *“apply the principles of reliable data transfer”* and explain how the protocol **progressively handles** the different channel problems.
 
-Your answer correctly covers:
-
-- **RDT 1.0** → reliable channel
-- **RDT 2.0** → bit errors using checksum + ACK/NAK
-- **RDT 2.1** → corrupted ACK/NAK using sequence numbers
-- **RDT 2.2** → ACK-only approach
-- **RDT 3.0** → packet loss using timer + retransmission
-- **Sequence diagrams** for the important stages
-- **Summary table**
-- **Conclusion**
-
-### One important correction
-
-In the **RDT 2.2 diagram**, this part:
-
-```text
-Sender                         Receiver
-  |                               |
-  |------ Data (seq 1) ---------->|
-  |              X                |
-  |          Corrupted            |
-  |                               |
-  |<--------- ACK 0 --------------|
-```
-
-is slightly misleading. In RDT 2.2, if the **data packet is corrupted**, the receiver sends a **duplicate ACK for the last correctly received packet**. So the idea is correct, but write it as:
-
-```text
-Sender                         Receiver
-  |                               |
-  |------ Data (seq 1) ---------->|
-  |          Corrupted            |
-  |                               |
-  |<--------- ACK 0 --------------|
-  |                               |
-  |------ Data (seq 1) ---------->|
-  |                               |
-  |<--------- ACK 1 --------------|
-```
-
-Also, for a **12-mark answer**, you don't necessarily need to explain RDT 1.0 in much detail. The examiner will mainly look for the **progressive handling of errors → corrupted ACKs → loss**.
-
-### Final verdict
-
-**Yes — you can write this in the exam for 12 marks.** I would rate it around **11–12/12** if the diagrams are drawn clearly and the terminology is correct.
-
-The key line to remember is:
-
-> **RDT 2.0 → checksum + ACK/NAK → RDT 2.1/2.2 → sequence numbers → RDT 3.0 → timer + retransmission.**
-
-That progression directly answers the question.
-
-
-
+------------------------
 
 # Computer Networks CAT2 — Complete Practical Viva Preparation
 
@@ -1645,3 +2233,456 @@ If your viva is starting soon, revise in this order:
 One final rule for the viva: start every answer with a clear definition, then explain the working, and finish with its purpose or an example. For a question about CSMA, for instance, begin with “CSMA is a MAC protocol that senses the channel before transmitting,” then explain the steps and the reason collisions can still occur.
 
 That structure makes even an unfamiliar follow-up question easier to answer clearly.
+
+
+
+
+-------------------
+
+
+# P2P vs CDN for Video Streaming – 12 Marks
+
+## 1. Introduction
+
+Both **Peer-to-Peer (P2P) networks** and **Content Distribution Networks (CDNs)** are used to deliver video content to a large number of users.
+
+When the number of viewers suddenly **doubles**, the network must handle increased traffic without causing buffering or delays.
+
+The main difference is:
+
+- **P2P:** Viewers can also act as **uploaders** and share video data with other viewers.
+- **CDN:** Video is distributed through **multiple geographically distributed servers** located close to users.
+
+---
+
+# 2. P2P Network
+
+In a P2P network, users download video data from other peers as well as the original server.
+
+### Normal Traffic
+
+```text
+                    Original Server
+                         |
+                         v
+                    Peer 1
+                   /      \
+                  v        v
+              Peer 2     Peer 3
+                /  \       |
+               v    v      v
+            Peer 4 Peer 5 Peer 6
+```
+
+As more viewers join, they can also contribute upload bandwidth.
+
+### When Viewers Double
+
+Suppose there are initially **100 viewers** and suddenly the number becomes **200**.
+
+```text
+             Original Server
+                    |
+          ---------------------
+          |        |          |
+        Peer     Peer       Peer
+       /   \      | \        / \
+      v     v     v  v      v   v
+   New   New    New New   New  New
+  Peers  Peers  Peers      Peers
+```
+
+The new peers can obtain pieces of the video from existing peers.
+
+### Advantages During a Surge
+
+- Upload capacity increases as more peers join.
+- Traffic is distributed among many users.
+- The original server does not need to send the complete video to every viewer.
+- Can scale well for very large numbers of viewers.
+
+### Disadvantages
+
+- Performance depends on **peer availability and upload bandwidth**.
+- Peers may leave suddenly.
+- Upload speeds may be different for different users.
+- Maintaining peer connections can introduce complexity.
+- Quality can become unpredictable during sudden changes in peer availability.
+
+---
+
+# 3. CDN
+
+A CDN consists of multiple geographically distributed servers called **edge servers**.
+
+Instead of every viewer contacting the origin server, users are directed to a nearby CDN server.
+
+### Normal Traffic
+
+```text
+                    Origin Server
+                         |
+              ---------------------
+              |         |          |
+              v         v          v
+           CDN 1      CDN 2      CDN 3
+             |          |          |
+           Users      Users      Users
+```
+
+### When Viewers Double
+
+When the number of viewers suddenly doubles:
+
+```text
+                    Origin Server
+                         |
+              ---------------------
+              |         |          |
+              v         v          v
+           CDN 1      CDN 2      CDN 3
+          / | \       / | \       / | \
+         v  v  v     v  v  v     v  v  v
+       Users        Users        Users
+       + New        + New        + New
+       Users        Users        Users
+```
+
+The additional viewers are distributed across different CDN edge servers.
+
+If the video is already cached at the edge servers, the CDN can serve the additional viewers **without repeatedly contacting the origin server**.
+
+---
+
+# 4. Comparison During Sudden Increase
+
+| Feature | P2P | CDN |
+|---|---|---|
+| Main source | Other peers | CDN edge servers |
+| Traffic distribution | Among peers | Among CDN servers |
+| Effect of more users | More upload capacity can become available | Load distributed across edge servers |
+| Server load | Can be reduced significantly | Reduced using caching and distribution |
+| Reliability | Depends on peer availability | Generally more predictable |
+| Performance | Variable | More consistent |
+| Scalability | High | Very high |
+| Control over quality | Lower | Higher |
+| Infrastructure | Less centralized | Requires distributed infrastructure |
+
+---
+
+# 5. Which Handles the Surge More Efficiently?
+
+### **CDN is generally more efficient and reliable for a sudden doubling of viewers.**
+
+The main reasons are:
+
+### 1. Distributed servers
+
+A CDN has multiple edge servers, so the additional viewers can be distributed across different locations.
+
+### 2. Caching
+
+If the video is already cached at the edge server, the CDN does not need to retrieve it repeatedly from the origin server.
+
+### 3. Reduced latency
+
+Users are connected to a geographically closer CDN server, reducing network delay.
+
+### 4. Better traffic management
+
+CDNs use mechanisms such as **load balancing** to distribute users among available servers.
+
+### 5. Predictable performance
+
+Unlike P2P, CDN performance does not depend heavily on whether individual users remain online or have sufficient upload bandwidth.
+
+---
+
+# 6. Overall Traffic Behavior
+
+### P2P
+
+```text
+More Viewers
+     ↓
+More Peers
+     ↓
+More Possible Upload Sources
+     ↓
+Traffic Distributed Among Peers
+     ↓
+Reduced Origin Server Load
+```
+
+### CDN
+
+```text
+More Viewers
+     ↓
+Load Distributed Across Edge Servers
+     ↓
+Cached Video Served Locally
+     ↓
+Less Traffic to Origin Server
+     ↓
+Faster and More Reliable Streaming
+```
+
+---
+
+# 7. Conclusion
+
+Both P2P and CDN networks can handle an increase in video-streaming users by **distributing network traffic**.
+
+In **P2P**, the additional viewers can also become sources of video data, allowing the system to scale with the number of peers. However, its performance depends on peer availability and upload capacity.
+
+In a **CDN**, traffic is distributed among geographically distributed edge servers, and cached content can be delivered without repeatedly contacting the origin server. Therefore, **CDNs are generally better suited for sudden surges in viewers because they provide more predictable performance, lower latency, effective load balancing, and reduced congestion at the origin server.**
+
+
+
+
+----------------
+
+
+# Reliable Data Transfer Protocol for Bit Errors, Corrupted ACKs and Packet Loss – 12 Marks
+
+## 1. Introduction
+
+A reliable data transfer (RDT) protocol ensures that data sent from a **sender** reaches the **receiver** correctly and in the proper order, even when the underlying channel is unreliable.
+
+The protocol can be developed progressively:
+
+1. **Bit errors → checksum and retransmission**
+2. **Corrupted ACKs → sequence numbers**
+3. **Packet loss → timeout and retransmission**
+
+---
+
+## 2. Handling Bit Errors
+
+First, assume that packets may be **corrupted**, but are not lost.
+
+The sender adds a **checksum** to each packet. The receiver checks the checksum.
+
+- If correct → receiver sends **ACK**.
+- If corrupted → receiver sends **NAK**.
+- On receiving NAK, sender retransmits the packet.
+
+### Sequence Diagram
+
+```text
+Sender                         Receiver
+  |                               |
+  |-------- Data + Checksum ----->|
+  |                               |
+  |     Packet corrupted          |
+  |                               |
+  |<------------- NAK ------------|
+  |                               |
+  |-------- Retransmit ---------->|
+  |                               |
+  |<------------- ACK ------------|
+  |                               |
+```
+
+Thus, corrupted data is detected and retransmitted.
+
+---
+
+# 3. Handling Corrupted Acknowledgments
+
+Now assume that **ACK/NAK messages themselves can also be corrupted**.
+
+If the sender receives a corrupted ACK/NAK, it cannot know whether the receiver correctly received the packet.
+
+To solve this, **sequence numbers** are added to packets.
+
+For example, packets use sequence numbers **0 and 1** alternately.
+
+The receiver uses the sequence number to identify duplicate packets.
+
+### Sequence Diagram
+
+```text
+Sender                         Receiver
+  |                               |
+  |------ Packet (Seq = 0) ------>|
+  |                               |
+  |<--------- ACK (0) ------------|
+  |                               |
+  |     ACK becomes corrupted     |
+  |                               |
+  |<------ Corrupted ACK ---------|
+  |                               |
+  |------ Packet (Seq = 0) ------>|
+  |                               |
+  |  Duplicate packet detected    |
+  |                               |
+  |<--------- ACK (0) ------------|
+  |                               |
+  |------ Packet (Seq = 1) ------>|
+  |                               |
+  |<--------- ACK (1) ------------|
+```
+
+The receiver does **not deliver the duplicate packet again**. It simply sends the ACK again.
+
+Thus, sequence numbers prevent **duplicate delivery**.
+
+---
+
+# 4. Handling Packet Loss
+
+Now assume that packets or acknowledgments can be **lost**.
+
+If the sender waits forever for an ACK, communication may stop.
+
+Therefore, the sender uses a **timer**.
+
+- Sender transmits a packet and starts a timer.
+- If ACK arrives → send the next packet.
+- If ACK is lost or packet is lost → timer expires.
+- Sender retransmits the packet.
+
+### Sequence Diagram
+
+```text
+Sender                         Receiver
+  |                               |
+  |------ Packet (Seq = 0) ------>|
+  |                               |
+  |<--------- ACK (0) ------------|
+  |                               |
+  |------ Packet (Seq = 1) ------>|
+  |          X                    |
+  |       Packet lost             |
+  |                               |
+  |       Timer expires           |
+  |                               |
+  |------ Retransmit Seq = 1 ---->|
+  |                               |
+  |<--------- ACK (1) ------------|
+```
+
+If the ACK is lost:
+
+```text
+Sender                         Receiver
+  |                               |
+  |------ Packet (Seq = 0) ------>|
+  |                               |
+  |<--------- ACK (0) ---X        |
+  |          ACK lost             |
+  |                               |
+  |       Timer expires           |
+  |                               |
+  |------ Retransmit Seq = 0 ---->|
+  |                               |
+  |   Duplicate detected          |
+  |                               |
+  |<--------- ACK (0) ------------|
+```
+
+The receiver discards the duplicate and sends the ACK again.
+
+---
+
+# 5. Final Reliable Data Transfer Protocol
+
+The complete protocol therefore uses:
+
+- **Checksum** → detects corrupted packets.
+- **ACK/NAK** → informs the sender about successful or unsuccessful reception.
+- **Sequence numbers** → detect duplicate packets caused by retransmission.
+- **Timer** → detects packet or ACK loss.
+- **Retransmission** → recovers lost or corrupted packets.
+
+### Overall Operation
+
+```text
+        Sender                         Receiver
+          |                               |
+          |--- Data + Checksum + Seq ---->|
+          |                               |
+          |       Check checksum          |
+          |                               |
+          |<------------ ACK -------------|
+          |                               |
+          |       ACK corrupted/lost?      |
+          |                               |
+          |--- Retransmit if required ---->|
+          |                               |
+          |       Duplicate?              |
+          |       Discard + ACK           |
+          |                               |
+          |<------------ ACK -------------|
+```
+
+---
+
+## 6. Conclusion
+
+The reliable data transfer protocol is progressively enhanced to handle different channel problems. **Checksums and ACK/NAK handle bit errors, sequence numbers handle corrupted acknowledgments and duplicate packets, and timers with retransmission handle packet loss.** Together, these mechanisms provide reliable, ordered, and duplicate-free data delivery over an unreliable channel.
+
+
+
+--------------
+
+
+Yes. **This answer is suitable for the 12-mark question you asked.** In fact, it is **better aligned with the wording of the question** than the previous answer because the question specifically asks you to *“apply the principles of reliable data transfer”* and explain how the protocol **progressively handles** the different channel problems.
+
+Your answer correctly covers:
+
+- **RDT 1.0** → reliable channel
+- **RDT 2.0** → bit errors using checksum + ACK/NAK
+- **RDT 2.1** → corrupted ACK/NAK using sequence numbers
+- **RDT 2.2** → ACK-only approach
+- **RDT 3.0** → packet loss using timer + retransmission
+- **Sequence diagrams** for the important stages
+- **Summary table**
+- **Conclusion**
+
+### One important correction
+
+In the **RDT 2.2 diagram**, this part:
+
+```text
+Sender                         Receiver
+  |                               |
+  |------ Data (seq 1) ---------->|
+  |              X                |
+  |          Corrupted            |
+  |                               |
+  |<--------- ACK 0 --------------|
+```
+
+is slightly misleading. In RDT 2.2, if the **data packet is corrupted**, the receiver sends a **duplicate ACK for the last correctly received packet**. So the idea is correct, but write it as:
+
+```text
+Sender                         Receiver
+  |                               |
+  |------ Data (seq 1) ---------->|
+  |          Corrupted            |
+  |                               |
+  |<--------- ACK 0 --------------|
+  |                               |
+  |------ Data (seq 1) ---------->|
+  |                               |
+  |<--------- ACK 1 --------------|
+```
+
+Also, for a **12-mark answer**, you don't necessarily need to explain RDT 1.0 in much detail. The examiner will mainly look for the **progressive handling of errors → corrupted ACKs → loss**.
+
+### Final verdict
+
+**Yes — you can write this in the exam for 12 marks.** I would rate it around **11–12/12** if the diagrams are drawn clearly and the terminology is correct.
+
+The key line to remember is:
+
+> **RDT 2.0 → checksum + ACK/NAK → RDT 2.1/2.2 → sequence numbers → RDT 3.0 → timer + retransmission.**
+
+That progression directly answers the question.
+
+
+
+-----------------------
