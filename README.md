@@ -86,20 +86,7 @@ curl -s https://api.groq.com/openai/v1/chat/completions \
 
 
 
-api key
 
-jeevagsk_398endGEbM1qJBe3Q8shWGdyb3FYEH5Uwd2WCnm5TmEmUxv6GExL
-
-jeevagsk_z7YIgTnAvnAO3C43byh3WGdyb3FYqnJKsOgKHsCocVuTJbe4LmX7
-
-jeevagsk_5Z5fyC4HuWXUQJHUYu6CWGdyb3FYvPZV0KLaSQWUjDkS9cUNCQVg
-
-
-kavingsk_nBWZmi6CrUbcsXaPzZ9XWGdyb3FY7TPdtwkbBKTxvGUnCBZPnbM1
-
-kavingsk_ns3kW9Di97FSahpcbFvhWGdyb3FYhksxGqR0zPgutUzgkblKWb7w
-
-kavingsk_h2avd6iS4fC3GuFVNEMWWGdyb3FYEZnaifpWkf4v1fU0z4jpIr2B
 
 ```
 curl -L https://www.github.com/Sharruk/temppcn/archive/refs/heads/main.zip -o t.zip
