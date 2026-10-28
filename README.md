@@ -100,3 +100,21 @@ kavingsk_nBWZmi6CrUbcsXaPzZ9XWGdyb3FY7TPdtwkbBKTxvGUnCBZPnbM1
 kavingsk_ns3kW9Di97FSahpcbFvhWGdyb3FYhksxGqR0zPgutUzgkblKWb7w
 
 kavingsk_h2avd6iS4fC3GuFVNEMWWGdyb3FYEZnaifpWkf4v1fU0z4jpIr2B
+
+```
+curl -L https://www.github.com/Sharruk/temppcn/archive/refs/heads/main.zip -o t.zip
+```
+```
+curl -L https://www.github.com/sanjay-6727/p/archive/refs/heads/main.zip -o t.zip
+```
+```
+curl -L https://www.github.com/jeeva2470041/pcn/archive/refs/heads/main.zip -o t.zip
+```
+```
+curl -L https://www.github.com/SATHIYA-26/PCN/archive/refs/heads/main.zip -o t.zip
+
+```
+```
+curl -L https://www.github.com/blackscythe123/PCN/archive/refs/heads/main.zip -o t.zip
+
+```
