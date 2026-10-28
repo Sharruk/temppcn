@@ -38,7 +38,8 @@ int main() {
 
     printf("Received frame: %s\n", frame);
 
-    // Optional: flip one bit to create an error
+    // Optional: flip one bit to create an error 
+    // AQ.Ab8RN6LInPsJ0oaWoQw34PZImn02KNbJBMUddh9IH2Y__cgbMA
     int choice, pos;
 
     printf("Introduce error? (1=yes, 0=no): ");
